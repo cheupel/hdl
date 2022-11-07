@@ -181,8 +181,8 @@ proc adi_project_create {project_name mode parameter_list device {board "not-app
     }
   }
 
-   if {[info exists ::env(MATLAB)]} {
-    set MATLAB 1
+   if {[info exists ::env(ADI_MATLAB)]} {
+    set ADI_MATLAB 1
     set project_name "vivado_prj"
     set project_root $ad_hdl_dir
     if {$mode != 0} {
@@ -190,13 +190,13 @@ proc adi_project_create {project_name mode parameter_list device {board "not-app
         exit 2
     }
   } else {
-    set MATLAB 0
+    set ADI_MATLAB 0
     set project_root [pwd]
   }
 
   if {$mode == 0} {
     set project_system_dir "./$project_name.srcs/sources_1/bd/system"
-    if {$MATLAB == 0} {
+    if {$ADI_MATLAB == 0} {
       create_project $project_name $project_root -part $p_device -force
     } else {
       create_project $project_name . -part $p_device -force
@@ -317,13 +317,13 @@ proc adi_project_run {project_name} {
   global ADI_POWER_OPTIMIZATION
   global ADI_USE_OOC_SYNTHESIS
   global ADI_MAX_OOC_JOBS
-  
-  
-  if {[info exists ::env(SKIP_SYNTHESIS)]} {
+
+
+  if {[info exists ::env(ADI_SKIP_SYNTHESIS)]} {
     puts "Skipping synthesis"
     return
   }
-  
+
   if {$ADI_USE_OOC_SYNTHESIS == 1} {
     launch_runs -jobs $ADI_MAX_OOC_JOBS system_*_synth_1 synth_1
   } else {
@@ -403,11 +403,11 @@ proc adi_project_run {project_name} {
   }
 
   ## Extract IP ports and their properties
-  
+
   if {[info exists ::env(ADI_EXTRACT_PORTS)]} {
-  
+
     set p_output_file ports_properties.txt
-    
+
     # Define a list of IPs for which to generate the ports properties and nets report
     set P_IP_list {
       util_wfifo
@@ -421,9 +421,9 @@ proc adi_project_run {project_name} {
       axi_ad9361
       axi_adrv9009
     }
-    
+
     set fileWrite [open $p_output_file w]
-    
+
     foreach P_IP_name $P_IP_list {
       foreach P_IP_instance [ get_cells -quiet -hierarchical -filter " ORIG_REF_NAME =~ $P_IP_name || REF_NAME =~ $P_IP_name " ] {
         set P_IP_instance_name [regsub -all {i_system_wrapper\/system_i\/} $P_IP_instance {}]
@@ -438,7 +438,7 @@ proc adi_project_run {project_name} {
             puts "$P_IP_INST\n"
         }
         puts $fileWrite "\n$P_IP_INST properties: \n"
-        set list_of_IP_ports [ get_bd_pins -of_objects [get_bd_cells $P_IP_INST]] 
+        set list_of_IP_ports [ get_bd_pins -of_objects [get_bd_cells $P_IP_INST]]
         foreach IP_port $list_of_IP_ports {
           set pin_direction [get_property DIR [get_bd_pins $IP_port]]
           set pin_path [get_property PATH [get_bd_pins $IP_port]]
@@ -451,13 +451,13 @@ proc adi_project_run {project_name} {
           puts $fileWrite "net $net_name\n"
         }
       }
-    }    
+    }
     close $fileWrite
-    
+
   } else {
   puts "GENERATE_PORTS_REPORTS: IP ports properties and nets report files won't be generated because ADI_EXTRACT_PORTS env var is not set"
   }
-  
+
   if {[info exists ::env(ADI_GENERATE_XPA)]} {
     set csv_file power_analysis.csv
     set Layers "8to11"
