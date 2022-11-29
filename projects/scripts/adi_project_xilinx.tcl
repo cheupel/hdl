@@ -198,8 +198,6 @@ proc adi_project_create {project_name mode parameter_list device {board "not-app
     set project_system_dir "$project_root/$project_name.srcs/sources_1/bd/system"
     if {$ADI_MATLAB == 0} {
       create_project $project_name $project_root -part $p_device -force
-    } else {
-      create_project $project_name . -part $p_device -force
     }
   } else {
     set project_system_dir "$project_root/.srcs/sources_1/bd/system"
