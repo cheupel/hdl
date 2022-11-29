@@ -195,14 +195,14 @@ proc adi_project_create {project_name mode parameter_list device {board "not-app
   }
 
   if {$mode == 0} {
-    set project_system_dir "./$project_name.srcs/sources_1/bd/system"
+    set project_system_dir "$project_root/$project_name.srcs/sources_1/bd/system"
     if {$ADI_MATLAB == 0} {
       create_project $project_name $project_root -part $p_device -force
     } else {
       create_project $project_name . -part $p_device -force
     }
   } else {
-    set project_system_dir ".srcs/sources_1/bd/system"
+    set project_system_dir "$project_root/.srcs/sources_1/bd/system"
     create_project -in_memory -part $p_device
   }
 
@@ -214,13 +214,16 @@ proc adi_project_create {project_name mode parameter_list device {board "not-app
     set_property board_part $p_board [current_project]
   }
 
-  set lib_dirs $ad_hdl_dir/library
+  if {$ADI_MATLAB == 0} {
+    set lib_dirs $ad_hdl_dir/library
+  } else {
+    set lib_dirs [get_property ip_repo_paths [current_fileset]]
+     lappend lib_dirs $ad_hdl_dir/library
+  }
   if {[info exists ::env(ADI_GHDL_DIR)]} {
     if {$ad_hdl_dir ne $ad_ghdl_dir} {
       lappend lib_dirs $ad_ghdl_dir/library
     }
-  } else {
-    # puts -nonew-line "INFO: ADI_GHDL_DIR not defined.\n"
   }
 
   # Set a common IP cache for all projects
