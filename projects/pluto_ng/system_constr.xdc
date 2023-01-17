@@ -17,6 +17,15 @@ set_property -dict {PACKAGE_PIN D8 IOSTANDARD LVCMOS18} [get_ports vin_poe_valid
 set_property -dict {PACKAGE_PIN B7 IOSTANDARD LVCMOS18} [get_ports vin_usb2_valid_n]                            ; ## VIN_USB2_VALID_N
 set_property -dict {PACKAGE_PIN A7 IOSTANDARD LVCMOS18} [get_ports vin_usb1_valid_n]                            ; ## VIN_USB1_VALID_N
 
+## MIPI camera # BANK 66 1V8
+
+set_property  -dict {PACKAGE_PIN H1    IOSTANDARD SLVS_400_18  DIFF_TERM_ADV TERM_100}  [get_ports mipi_csi_clk_p]         ; ## IO_L1P_T0L_N0_DBC_66
+set_property  -dict {PACKAGE_PIN G1    IOSTANDARD SLVS_400_18  DIFF_TERM_ADV TERM_100}  [get_ports mipi_csi_clk_n]         ; ## IO_L1N_T0L_N1_DBC_66
+set_property  -dict {PACKAGE_PIN F4    IOSTANDARD SLVS_400_18  DIFF_TERM_ADV TERM_100}  [get_ports mipi_csi_data_p[0]]         ; ## IO_L2P_T0L_N2_66
+set_property  -dict {PACKAGE_PIN E4    IOSTANDARD SLVS_400_18  DIFF_TERM_ADV TERM_100}  [get_ports mipi_csi_data_n[0]]         ; ## IO_L2N_T0L_N3_66
+set_property  -dict {PACKAGE_PIN E2    IOSTANDARD SLVS_400_18  DIFF_TERM_ADV TERM_100}  [get_ports mipi_csi_data_p[1]]         ; ## IO_L3P_T0L_N4_AD15P_66
+set_property  -dict {PACKAGE_PIN E1    IOSTANDARD SLVS_400_18  DIFF_TERM_ADV TERM_100}  [get_ports mipi_csi_data_n[1]]         ; ## IO_L3N_T0L_N5_AD15N_66
+
 ## ADRV9002 # BANK 65
 
 set_property  -dict {PACKAGE_PIN V1    IOSTANDARD LVCMOS18}                      [get_ports rx1_enable]         ; ## IO_L2N_65_RX1_EN

@@ -147,7 +147,12 @@ module system_top (
   input                   s_1v2_sns_p,
   input                   s_1v2_sns_n,
   input                   s_1v8_mgtravtt_sns_p,
-  input                   s_1v8_mgtravtt_sns_n
+  input                   s_1v8_mgtravtt_sns_n,
+
+  input                   mipi_csi_clk_p,
+  input                   mipi_csi_clk_n,
+  input      [ 1:0]       mipi_csi_data_p,
+  input      [ 1:0]       mipi_csi_data_n
 );
 
   // internal registers
@@ -180,6 +185,8 @@ module system_top (
   wire          gpio_tx1_enable_in;
   wire          gpio_tx2_enable_in;
 
+  wire          gpio_mipi_video_aresetn;
+
   // assignments
 
   assign gpio_i[94:68] = gpio_o[94:68];
@@ -202,6 +209,7 @@ module system_top (
   assign fan_en  = gpio_o[66];
   assign fan_ctl = gpio_o[67];
 
+  assign gpio_mipi_video_aresetn = gpio_o[ 7];
   assign rf_rx1a_mux_ctl = gpio_o[ 8];
   assign rf_rx1b_mux_ctl = gpio_o[ 9];
   assign rf_rx2a_mux_ctl = gpio_o[10];
@@ -381,6 +389,11 @@ module system_top (
     .s_1v2_sns_p (s_1v2_sns_p),
     .s_1v2_sns_n (s_1v2_sns_n),
     .s_1v8_mgtravtt_sns_p (s_1v8_mgtravtt_sns_p),
-    .s_1v8_mgtravtt_sns_n (s_1v8_mgtravtt_sns_n));
+    .s_1v8_mgtravtt_sns_n (s_1v8_mgtravtt_sns_n),
+    .mipi_csi_clk_p (mipi_csi_clk_p),
+    .mipi_csi_clk_n (mipi_csi_clk_n),
+    .mipi_csi_data_p (mipi_csi_data_p),
+    .mipi_csi_data_n (mipi_csi_data_n),
+    .mipi_video_aresetn (gpio_mipi_video_aresetn));
 
 endmodule
