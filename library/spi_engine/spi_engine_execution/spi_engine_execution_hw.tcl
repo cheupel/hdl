@@ -79,7 +79,7 @@ proc p_elaboration {} {
   ad_interface signal sdo_t output 1
   ad_interface signal sdi   input  $num_of_sdi
 
-  ad_interface signal cs output 1
+  ad_interface signal cs output NUM_OF_CS
   ad_interface signal three_wire output 1
 
 }
